@@ -437,10 +437,14 @@ class Sampler(object):
         while len(unit_cube) < npoints:
             unit = np.random.rand(self.ndim)
             theta = self.prior_transform(unit)
+            logger.debug(f"Unit = {unit}")
+            logger.debug(f"Theta = {theta}")
             if self.check_draw(theta, warning=False):
+                logger.debug("Appending to unit cube, parameters, and log likelihood")
                 unit_cube.append(unit)
                 parameters.append(theta)
                 likelihood.append(self.log_likelihood(theta))
+        logger.info("Finished generating points from prior")
 
         return np.array(unit_cube), np.array(parameters), np.array(likelihood)
 
